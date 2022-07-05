@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TextInput, Button, View, StyleSheet } from "react-native";
+import { Text, TextInput, Button, View, ToastAndroid } from "react-native";
 import { Formik } from "formik";
 import axios from "axios";
 import { registrationSchema } from "../helpers/walidationSchemas";
@@ -10,7 +10,7 @@ interface IRegisteredUser extends IUser {
   confirmPassword: string;
 }
 
-const Registration: React.FC = () => {
+const Registration: React.FC = ({ navigation }) => {
   const ID = Number(new Date()).toString();
   const user: IRegisteredUser = {
     id: ID,
@@ -31,7 +31,11 @@ const Registration: React.FC = () => {
         try {
           // Local server from another test app
           const result = await axios.post("http://10.0.2.2:3001/registration", values);
-          console.log(result.data);
+          ToastAndroid.showWithGravity(
+            "Registration complete",
+            ToastAndroid.LONG,
+            ToastAndroid.TOP
+          );
         } catch (error) {
           console.log(error);
         }
@@ -104,6 +108,7 @@ const Registration: React.FC = () => {
             title="Submit"
             disabled={Object.keys(errors).length !== 0}
           />
+          <Button onPress={() => navigation.navigate("Authorization")} title="Authorization" />
         </View>
       )}
     </Formik>

@@ -9,6 +9,7 @@ export const authorisationSchema = yup.object().shape({
       /^[A-Za-z0-9]+([A-Za-z0-9]*|[._-]?[A-Za-z0-9]+)*$/g,
       "Not allowed space and not-latin letters"
     ),
+  password: yup.string().required(),
 });
 
 export const registrationSchema = yup.object().shape({
