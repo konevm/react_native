@@ -3,6 +3,8 @@ import { Text, TextInput, Button, View, ToastAndroid } from "react-native";
 import { Formik } from "formik";
 import axios from "axios";
 import { authorisationSchema } from "../helpers/walidationSchemas";
+import { IAuthorizationProps } from "../helpers/types";
+import { API_ROUTES } from "../constants/apiRoutes.constants";
 import { styles } from "../styles/Registration.module";
 
 interface IAuthorizatedUser {
@@ -10,7 +12,7 @@ interface IAuthorizatedUser {
   password: string;
 }
 
-const Authorization: React.FC = () => {
+const Authorization: React.FC = ({ navigation }: IAuthorizationProps) => {
   const user: IAuthorizatedUser = {
     login: "",
     password: "",
@@ -22,7 +24,7 @@ const Authorization: React.FC = () => {
       onSubmit={async (values) => {
         try {
           // Local server from another test app
-          const result = await axios.get("http://10.0.2.2:3001/authorization", { params: values });
+          const result = await axios.get(API_ROUTES.AUTHORIZATION, { params: values });
           ToastAndroid.showWithGravity(
             "Authorization complete",
             ToastAndroid.LONG,
@@ -58,6 +60,7 @@ const Authorization: React.FC = () => {
             title="Submit"
             disabled={Object.keys(errors).length !== 0}
           />
+          <Button onPress={() => navigation.navigate("Registration")} title="Registration" />
         </View>
       )}
     </Formik>
